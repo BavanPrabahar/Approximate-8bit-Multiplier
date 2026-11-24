@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Install Icarus Verilog, Yosys and numpy
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y iverilog yosys python3-numpy
+
+      - name: Python model + exhaustive testbenches (default design)
+        run: make test
+
+      - name: Exhaustive testbenches (exact tree and hybrid configurations)
+        run: |
+          make sim MASK=0000
+          make sim MASK=00FF
+          make sim4 MASK4=00
+          make sim4 MASK4=0F
+
+      - name: Synthesis report + netlist equivalence check
+        run: make synth
+
+      - name: Upload logs and reports
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: verification-logs
+          path: |
+            build/*.log
+            build/synth_report.md
