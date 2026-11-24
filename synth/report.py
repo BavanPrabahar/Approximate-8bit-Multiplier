@@ -52,6 +52,13 @@ GATE_FUNC = {
     "$_ORNOT_": lambda x, y: x | ~y,
     "$_MUX_": lambda x, y, s: np.where(s, y, x),
 }
+# Metadata cells (no logic). Newer Yosys keeps $scopeinfo cells after
+# flattening to record the original hierarchy.
+NON_LOGIC = {"$scopeinfo"}
+
+
+def logic_cells(module):
+    return [c for c in module["cells"].values() if c["type"] not in NON_LOGIC]
 
 CONFIGS = [
     ("Exact Wallace tree (baseline)", 0x0000),
@@ -96,7 +103,7 @@ def evaluate(module, a, b):
     def ready(bit):
         return isinstance(bit, str) or bit in val
 
-    pending = list(module["cells"].values())
+    pending = logic_cells(module)
     while pending:
         nxt = []
         for cell in pending:
@@ -130,7 +137,7 @@ def analyse(module):
 
     counts = {t: 0 for t in GATE_DELAY}
     power = 0.0
-    for cell in module["cells"].values():
+    for cell in logic_cells(module):
         counts[cell["type"]] = counts.get(cell["type"], 0) + 1
         y = val[cell["connections"]["Y"][0]]
         activity = np.count_nonzero(y[1:] != y[:-1]) / (y.size - 1)
