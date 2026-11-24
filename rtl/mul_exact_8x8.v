@@ -1,27 +1,12 @@
-// Exact Half Adder
-module ha_exact (
-    input  wire a,
-    input  wire b,
-    output wire sum,
-    output wire carry
-);
-    assign sum   = a ^ b;
-    assign carry = a & b;
-endmodule
+// Behavioural exact 8-bit multiplier: the golden reference (z = a * b) that
+// the testbenches compare against.
+//
+// Do NOT use this module for delay/area comparisons: synthesis tools map
+// "a * b" to their own optimised multiplier or to hard DSP blocks. For a fair
+// comparison use mul_exact_wallace.v, which is the same Wallace tree as
+// mul_app with exact adders. (The ha_exact / fa_exact cells that used to live
+// here are replaced by haa / faa with APPROX = 0.)
 
-// Exact Full Adder
-module fa_exact (
-    input  wire a,
-    input  wire b,
-    input  wire cin,
-    output wire sum,
-    output wire carry
-);
-    assign sum   = a ^ b ^ cin;
-    assign carry = (a & b) | (b & cin) | (cin & a);
-endmodule
-
-// Exact 8-bit Multiplier for comparison
 module mul_exact_8x8 (
     input  wire [7:0] a,
     input  wire [7:0] b,

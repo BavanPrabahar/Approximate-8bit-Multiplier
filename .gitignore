@@ -1,0 +1,18 @@
+# Simulation / synthesis outputs (make clean)
+build/
+*.vcd
+*.vvp
+
+# Python
+__pycache__/
+*.pyc
+
+# Quartus / ModelSim project clutter
+db/
+incremental_db/
+output_files/
+simulation/
+work/
+transcript
+*.wlf
+*.qws
