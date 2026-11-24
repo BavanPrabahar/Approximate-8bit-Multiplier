@@ -14,7 +14,7 @@
 //   MASK=16'h00FF          APPROX_MASK of the device under test (default FFFF)
 //   GOLDEN_FILE="f.hex"    vectors from: sim/verify_multiplier.py --golden f.hex
 //   DUMP                   write tb_mul_app.vcd for GTKWave
-// Prints "TEST PASSED" or "TEST FAILED" on the last line.
+// Prints "TEST PASSED" or "TEST FAILED" as the final verdict.
 
 `ifndef MASK
 `define MASK 16'hFFFF

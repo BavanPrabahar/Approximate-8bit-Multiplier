@@ -51,13 +51,13 @@ sim: $(BUILD)/golden8_$(MASK).hex
 	$(IVERILOG) -g2005 -Wall -Wno-timescale -o $(BUILD)/tb_mul_app.vvp \
 	    "-DMASK=16'h$(MASK)" '-DGOLDEN_FILE="$<"' tb/tb_mul_app.v $(RTL8)
 	$(VVP) -n $(BUILD)/tb_mul_app.vvp | tee $(BUILD)/tb_mul_app.log
-	@tail -n 1 $(BUILD)/tb_mul_app.log | grep -q "TEST PASSED"
+	@grep -qx "TEST PASSED" $(BUILD)/tb_mul_app.log
 
 sim4: $(BUILD)/golden4_$(MASK4).hex
 	$(IVERILOG) -g2005 -Wall -Wno-timescale -o $(BUILD)/tb_mul_app_4x4.vvp \
 	    "-DMASK4=8'h$(MASK4)" '-DGOLDEN_FILE="$<"' tb/tb_mul_app_4x4.v $(RTL4)
 	$(VVP) -n $(BUILD)/tb_mul_app_4x4.vvp | tee $(BUILD)/tb_mul_app_4x4.log
-	@tail -n 1 $(BUILD)/tb_mul_app_4x4.log | grep -q "TEST PASSED"
+	@grep -qx "TEST PASSED" $(BUILD)/tb_mul_app_4x4.log
 
 synth: | $(BUILD)
 	$(PYTHON) synth/report.py --yosys $(YOSYS) --keep $(BUILD)/synth | tee $(BUILD)/synth_report.md

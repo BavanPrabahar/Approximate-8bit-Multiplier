@@ -12,7 +12,7 @@
 //   MASK4=8'h0F            APPROX_MASK of the device under test (default FF)
 //   GOLDEN_FILE="f.hex"    vectors from:
 //                          sim/verify_multiplier.py --width 4 --golden f.hex
-// Prints "TEST PASSED" or "TEST FAILED" on the last line.
+// Prints "TEST PASSED" or "TEST FAILED" as the final verdict.
 
 `ifndef MASK4
 `define MASK4 8'hFF
